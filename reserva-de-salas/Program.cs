@@ -1,7 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using reserva_de_salas.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Configuração do banco de dados
+builder.Services.AddDbContext<BancoContext>(opts =>
+    opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 var app = builder.Build();
 
