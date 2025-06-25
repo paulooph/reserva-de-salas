@@ -1,0 +1,28 @@
+﻿@model reserva_de_salas.Models.Usuario
+
+@{
+    ViewData["Title"] = "Excluir Usuário";
+}
+
+<h1>Excluir Usuário</h1>
+
+<h3>Tem certeza que deseja excluir este usuário?</h3>
+
+<div>
+    <dl class="row mb-3">
+        <dt class="col-sm-2">Id</dt>
+        <dd class="col-sm-10">@Model.Id</dd>
+
+        <dt class="col-sm-2">E-mail</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+
+        <dt class="col-sm-2">Administrador?</dt>
+        <dd class="col-sm-10">@(@Model.Administrador ? "Sim" : "Não")</dd>
+    </dl>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input asp-for="Id" type="hidden" />
+    <button type="submit" class="btn btn-danger">Excluir</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

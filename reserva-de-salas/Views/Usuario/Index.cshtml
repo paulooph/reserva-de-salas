@@ -1,0 +1,37 @@
+﻿@model IEnumerable<reserva_de_salas.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Listar Usuários";
+}
+
+<h1>Listar Usuários</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Novo Usuário</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>E-mail</th>
+            <th>Administrador?</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td>@u.Id</td>
+                <td>@u.Email</td>
+                <td>@(u.Administrador ? "Sim" : "Não")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@u.Id">Detalhes</a> |
+                    <a asp-action="Edit" asp-route-id="@u.Id">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@u.Id">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

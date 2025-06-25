@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using reserva_de_salas.Models;
 
 namespace reserva_de_salas.Data
 {
@@ -8,6 +9,8 @@ namespace reserva_de_salas.Data
             : base(options)
         {
         }
+
+        public DbSet<Usuario> Usuarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
