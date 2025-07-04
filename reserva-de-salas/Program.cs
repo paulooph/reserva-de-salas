@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using reserva_de_salas.Data;
 using reserva_de_salas.Interfaces;
+using reserva_de_salas.Repositories;
 using reserva_de_salas.Repositorys;
 using reserva_de_salas.Services;
 
@@ -15,10 +16,11 @@ builder.Services.AddDbContext<BancoContext>(opts =>
 
 //Escopos de Repositorio
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<ISalaRepository, SalaRepository>();
 
 //Escopos de Serviço
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-
+builder.Services.AddScoped<ISalaService, SalaService>();
 
 var app = builder.Build();
 
