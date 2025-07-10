@@ -4,6 +4,7 @@ using reserva_de_salas.Interfaces;
 using reserva_de_salas.Repositories;
 using reserva_de_salas.Repositorys;
 using reserva_de_salas.Services;
+using reserva_de_salas.Services.Strategy;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,10 +18,19 @@ builder.Services.AddDbContext<BancoContext>(opts =>
 //Escopos de Repositorio
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ISalaRepository, SalaRepository>();
+builder.Services.AddScoped<IReservaRepository, ReservaRepository>();
+
+// Escopos das Estratégias de Validação (Padrão Strategy)
+builder.Services.AddScoped<ValidadorDeReservaCapacidade>();
+builder.Services.AddScoped<ValidadorDeReservaHorario>(); 
 
 //Escopos de Serviço
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<ISalaService, SalaService>();
+builder.Services.AddScoped<IReservaService, ReservaService>();
+
+// Registro do Facade (Padrão Facade)
+builder.Services.AddScoped<ReservasFacade>(); 
 
 var app = builder.Build();
 

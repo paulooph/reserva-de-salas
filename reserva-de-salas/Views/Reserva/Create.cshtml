@@ -1,0 +1,59 @@
+﻿@model reserva_de_salas.Models.Reserva
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Cadastrar Nova Reserva";
+}
+
+<h1>Cadastrar Nova Reserva</h1>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group mb-3">
+        <label asp-for="UsuarioId" class="control-label">Usuário:</label>
+        <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.Usuarios">
+            <option value="0">-- Selecione um Usuário --</option>
+        </select>
+        <span asp-validation-for="UsuarioId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="SalaId" class="control-label">Sala:</label>
+        <select asp-for="SalaId" class="form-control" asp-items="ViewBag.Salas">
+            <option value="0">-- Selecione uma Sala --</option>
+        </select>
+        <span asp-validation-for="SalaId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Data" class="control-label"></label>
+        <input asp-for="Data" type="date" class="form-control" />
+        <span asp-validation-for="Data" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="HoraInicio" class="control-label"></label>
+        <input asp-for="HoraInicio" type="time" class="form-control" />
+        <span asp-validation-for="HoraInicio" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="HoraFim" class="control-label"></label>
+        <input asp-for="HoraFim" type="time" class="form-control" />
+        <span asp-validation-for="HoraFim" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="NumeroDePessoas" class="control-label"></label>
+        <input asp-for="NumeroDePessoas" type="number" class="form-control" />
+        <span asp-validation-for="NumeroDePessoas" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+    <a asp-action="Index" class="btn btn-secondary">Voltar para a Lista</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
