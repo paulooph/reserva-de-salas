@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using reserva_de_salas.Data;
 using reserva_de_salas.Interfaces;
 using reserva_de_salas.Models;

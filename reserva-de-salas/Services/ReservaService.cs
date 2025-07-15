@@ -1,47 +1,74 @@
 ﻿using reserva_de_salas.Interfaces;
 using reserva_de_salas.Models;
-using reserva_de_salas.Services.Strategy; 
+using reserva_de_salas.Services.Strategy;
 
 namespace reserva_de_salas.Services
 {
     public class ReservaService : IReservaService
     {
-        private readonly IReservaRepository _repo;
-        private IValidadorDeReservaStrategy _validator;
+        private readonly IReservaRepository _repository;
+        private IValidadorDeReservaStrategy _strategy;
 
-        public ReservaService(IReservaRepository repo)
-            => _repo = repo;
+        public ReservaService(IReservaRepository repository)
+        {
+            _repository = repository;
+        }
 
         public async Task<IEnumerable<Reserva>> GetAllAsync()
-            => await _repo.GetAllAsync();
+        {
+            return await _repository.GetAllAsync();
+        }
 
         public async Task<Reserva> GetByIdAsync(long id)
-            => await _repo.GetByIdAsync(id)
-               ?? throw new InvalidOperationException("Reserva não existe");
-
-        public async Task<Reserva> SaveAsync(Reserva r)
         {
-            if (r.Id == 0) await _repo.AddAsync(r);
-            else _repo.Update(r);
+            var reserva = await _repository.GetByIdAsync(id);
+            if (reserva == null)
+            {
+                throw new InvalidOperationException("Reserva não existe");
+            }
+            return reserva;
+        }
 
-            await _repo.SaveChangesAsync();
-            return r;
+        public async Task<Reserva> SaveAsync(Reserva reserva)
+        {
+            if (reserva.Id == 0)
+            {
+                await _repository.AddAsync(reserva);
+            }
+            else
+            {
+                _repository.Update(reserva);
+            }
+
+            await _repository.SaveChangesAsync();
+            return reserva;
         }
 
         public async Task DeleteAsync(long id)
         {
-            var r = await _repo.GetByIdAsync(id)
-                ?? throw new InvalidOperationException("Reserva não existe");
-            _repo.Delete(r);
-            await _repo.SaveChangesAsync();
+            var reserva = await _repository.GetByIdAsync(id);
+            if (reserva == null)
+            {
+                throw new InvalidOperationException("Reserva não existe");
+            }
+
+            _repository.Delete(reserva);
+            await _repository.SaveChangesAsync();
         }
 
-        public void SetValidator(IValidadorDeReservaStrategy v)
-            => _validator = v;
+        public void SetValidator(IValidadorDeReservaStrategy strategy)
+        {
+            _strategy = strategy;
+        }
 
-        public async Task<bool> ValidateAsync(Reserva r)
-            => _validator != null
-               ? await _validator.Validar(r)
-               : throw new InvalidOperationException("Validador não definido");
+        public async Task<bool> ValidateAsync(Reserva reserva)
+        {
+            if (_strategy != null)
+            {
+                return await _strategy.Validar(reserva);
+            }
+            throw new InvalidOperationException("Estratégia de validação não definida");
+        }
     }
 }
+
