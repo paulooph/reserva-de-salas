@@ -10,7 +10,7 @@
     <a asp-action="Create" class="btn btn-primary">Nova Sala</a>
 </p>
 
-<table class="table table-striped">
+<table id="salasTable" class="table table-striped">
     <thead>
         <tr>
             <th>ID</th>
@@ -50,4 +50,20 @@
     <div class="alert alert-danger mt-3" role="alert">
         @TempData["ErrorMessage"]
     </div>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+          $('#salasTable').DataTable({
+            language: {
+              url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json'
+            },
+            paging:    true,
+            searching: true,
+            ordering:  true,
+            info:      true
+          });
+        });
+    </script>
 }

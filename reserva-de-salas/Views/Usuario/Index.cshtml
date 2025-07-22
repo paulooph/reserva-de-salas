@@ -10,7 +10,7 @@
     <a asp-action="Create" class="btn btn-primary">Novo Usuário</a>
 </p>
 
-<table class="table table-striped">
+<table id="usuariosTable" class="table table-striped">
     <thead>
         <tr>
             <th>Id</th>
@@ -35,3 +35,20 @@
         }
     </tbody>
 </table>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+          $('#usuariosTable').DataTable({
+            language: {
+              url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json'
+            },
+            paging:    true,
+            searching: true,
+            ordering:  true,
+            info:      true
+          });
+        });
+    </script>
+}
