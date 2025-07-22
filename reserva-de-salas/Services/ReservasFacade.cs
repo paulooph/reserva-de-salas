@@ -27,21 +27,36 @@ namespace reserva_de_salas.Services
         }
 
         public async Task<List<Reserva>> ListarReservasAsync()
-            => (await _reservaService.GetAllAsync()).ToList();
+        {
+            var reservas = await _reservaService.GetAllAsync();
+            return reservas.ToList();
+        }
 
         public async Task<List<Usuario>> ListarUsuariosAsync()
-            => (await _usuarioService.GetAllAsync()).ToList();
+        {
+            var usuarios = await _usuarioService.GetAllAsync();
+            return usuarios.ToList();
+        }
 
         public async Task<List<Sala>> ListarSalasAsync()
-            => (await _salaService.GetAllSalasAsync()).ToList();
+        {
+            var salas = await _salaService.GetAllSalasAsync();
+            return salas.ToList();
+        }
 
         public async Task<Dictionary<string, long>> GetIndicadoresAsync()
-            => new()
+        {
+            var totalSalas = (await _salaService.GetAllSalasAsync()).Count();
+            var totalUsuarios = (await _usuarioService.GetAllAsync()).Count();
+            var totalReservas = (await _reservaService.GetAllAsync()).Count();
+
+            return new Dictionary<string, long>
             {
-                ["totalSalas"] = (await _salaService.GetAllSalasAsync()).Count(),
-                ["totalUsuarios"] = (await _usuarioService.GetAllAsync()).Count(),
-                ["totalReservas"] = (await _reservaService.GetAllAsync()).Count()
+                ["totalSalas"] = totalSalas,
+                ["totalUsuarios"] = totalUsuarios,
+                ["totalReservas"] = totalReservas
             };
+        }
 
         public async Task<string> ReservarAsync(Reserva reserva)
         {
@@ -50,7 +65,6 @@ namespace reserva_de_salas.Services
             {
                 return "A hora de fim deve ser posterior à hora de início.";
             }
-
 
             // 1) Data no passado
             if (reserva.Data.Date < DateTime.Today)
@@ -88,12 +102,22 @@ namespace reserva_de_salas.Services
             return "Reserva realizada com sucesso!";
         }
 
-
-        public async Task<string> AtualizarAsync(Reserva reserva)
+        public async Task<string> AtualizarAsync(Reserva model)
         {
             try
             {
-                _ = await _reservaService.GetByIdAsync(reserva.Id);
+                // 1) Busca a instância única do banco
+                var reserva = await _reservaService.GetByIdAsync(model.Id);
+
+                // 2) Atualiza apenas os campos permitidos
+                reserva.UsuarioId = model.UsuarioId;
+                reserva.SalaId = model.SalaId;
+                reserva.Data = model.Data;
+                reserva.HoraInicio = model.HoraInicio;
+                reserva.HoraFim = model.HoraFim;
+                reserva.NumeroDePessoas = model.NumeroDePessoas;
+
+                // 3) Reusa seu mesmo método de validação e salvamento
                 return await ReservarAsync(reserva);
             }
             catch (Exception ex)
@@ -108,6 +132,9 @@ namespace reserva_de_salas.Services
         }
 
         public async Task<Reserva> GetByIdAsync(long id)
-            => await _reservaService.GetByIdAsync(id);
+        {
+            return await _reservaService.GetByIdAsync(id);
+        }
     }
 }
+

@@ -8,7 +8,10 @@ namespace reserva_de_salas.Controllers
     public class ReservaController : Controller
     {
         private readonly ReservasFacade _facade;
-        public ReservaController(ReservasFacade facade) => _facade = facade;
+        public ReservaController(ReservasFacade facade)
+        {
+            _facade = facade;
+        }
 
         public async Task<IActionResult> Index()
         {
