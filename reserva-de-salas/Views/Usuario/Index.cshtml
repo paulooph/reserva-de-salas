@@ -27,9 +27,9 @@
                 <td>@u.Email</td>
                 <td>@(u.Administrador ? "Sim" : "Não")</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@u.Id">Detalhes</a> |
-                    <a asp-action="Edit" asp-route-id="@u.Id">Editar</a> |
-                    <a asp-action="Delete" asp-route-id="@u.Id">Excluir</a>
+                    <a asp-action="Details" asp-route-id="@u.Id" class="btn btn-primary">Detalhes</a> |
+                    <a asp-action="Edit" asp-route-id="@u.Id" class="btn btn-warning">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@u.Id" class="btn btn-danger">Excluir</a>
                 </td>
             </tr>
         }
